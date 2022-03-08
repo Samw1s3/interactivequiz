@@ -69,18 +69,24 @@ function startTimer() {
 }
 
 function showQuestion(index) {
+    if (index === questions.length){
+        endGame();
+        return;
+    }
+    
     const question = questions[index];
 
     questionTitle.textContent = question.title;
 
-
+    correctAnswer.classList.add('hide')
+    wrongAnswer.classList.add('hide')
     //loop through the choices
 
     // generate li for each
     questionChoices.textContent = "";
 
-    for (var index = 0; index < question.choices.length; index++) {
-        const choice = question.choices[index]
+    for (var i = 0; i < question.choices.length; i++) {
+        const choice = question.choices[i]
 
         const li = document.createElement('li');
 
@@ -91,196 +97,198 @@ function showQuestion(index) {
         li.appendChild(button);
 
         questionChoices.appendChild(li);
+
+        questionChoices.addEventListener("click", e => {
+
+            let responses = e.target.getAttribute('data-set')
+
+            if (responses === "true") {
+                console.log(true)
+                correctAnswer.classList.remove('hide');
+
+            } else {
+                console.log(false)
+                wrongAnswer.classList.remove('hide');
+                timeRemaining += -5
+            }
+            showQuestion(index+1);
+        })
     }
-    questionChoices.addEventListener("click", e => {
-        
-        let responses = e.target.getAttribute('data-set')
 
-       if (responses === "true") {
-            console.log(true)
-            correctAnswer.classList.remove('hide');
-
-       } else { 
-        console.log(false)
-        wrongAnswer.classList.remove('hide');
-       timeRemaining += -5 
-       }
-       
-    index++;
-        // nextQuestion ();
-    
-    })
 }
 
-//function nextQuestion() {
+    //function nextQuestion() {
 
-//    button.addEventListener('click', function(event){
-//      if (choice.inAns == true) {
-//        index = ++;
-
-
-//question = questions[index]
-
-//questionTitle.textContent = question.title;
-
-//questionChoices.textContent = "";
-
-//for (let index = 0; index < question.choices.length; index++) {
-//    const choice = question.choices[index]
-
-//    const li = document.createElement('li');
-
-//    const button = document.createElement('button');
-//     button.textContent = choice.title;
-
-//    li.appendChild(button);
-//
-//     questionChoices.appendChild(li);
-//  }
-
-//      })
-//} 
-//   if (choice.inAns.true) {
-//  }
-//        button.addEventListener('click', true)
-//       index = ++
+    //    button.addEventListener('click', function(event){
+    //      if (choice.inAns == true) {
+    //        index = ++;
 
 
+    //question = questions[index]
 
+    //questionTitle.textContent = question.title;
 
-// if (choice.isAns.true) {
+    //questionChoices.textContent = "";
 
-//}
+    //for (let index = 0; index < question.choices.length; index++) {
+    //    const choice = question.choices[index]
 
-//help!!
-//questionChoices.forEach(choice => {
-//  questionChoices.addEventListener('click')
-//if (inAns === true) {
-//       correctAnswer.classList.remove('hide')
-//      index++
-//  }     
-//   nextQuestion()
+    //    const li = document.createElement('li');
 
-//Questions
+    //    const button = document.createElement('button');
+    //     button.textContent = choice.title;
 
-// when Click on the choice
-// should move to the next questio
-//function nextQuestion() {
-//   index++
-//}
+    //    li.appendChild(button);
+    //
+    //     questionChoices.appendChild(li);
+    //  }
 
-//high score page
-//1. click on the play again btn
-//redirect the user to the landing page
+    //      })
+    //} 
+    //   if (choice.inAns.true) {
+    //  }
+    //        button.addEventListener('click', true)
+    //       index = ++
 
 
 
-// If user clicks on correct choice
-// give feedback to say it was the correct choice
 
-//If users clicks on the wrong choice
-// give feed back to says its wrong
-// reduce time by 5 seconds
+    // if (choice.isAns.true) {
 
-// if the user click on the final choice of the final q
-// end game
+    //}
 
+    //help!!
+    //questionChoices.forEach(choice => {
+    //  questionChoices.addEventListener('click')
+    //if (inAns === true) {
+    //       correctAnswer.classList.remove('hide')
+    //      index++
+    //  }     
+    //   nextQuestion()
 
-//end game
-function endGame() {
-    //1. timer should stop
-    clearInterval(timerId);
+    //Questions
 
+    // when Click on the choice
+    // should move to the next questio
+    //function nextQuestion() {
+    //   index++
+    //}
 
-
-    //2. show the end game screen
-    sectionInitials.classList.remove('hide')
-
-    //Hide question screen
-    sectionQuestion.classList.add('hide')
-
-    // 3. show the current score in the end game screen
-    //hs -- time remaining
-    spanFinalHighscore.textContent = timeRemaining
-
-    submitButton.addEventListener('click', saveScore())
-
-    //showHighScores();
-}
-
-//const initials = document.querySelector("input-initials")
-
-//const submitButton = document.getElementById("submit-button")
-
-//initials.addEventListener('keyup', () => {
-//    submitButton.disabled = !initials.value
-//})
-
-// Save High Scores
-
-function saveScore() {
-    var score = timeRemaining;
-    localStorage.setItem("Initials" + "Score", JSON.stringify(initials))
+    //high score page
+    //1. click on the play again btn
+    //redirect the user to the landing page
 
 
-    initialsInput.addEventListener("submit", function (event) {
 
-        event.preventDefault();
+    // If user clicks on correct choice
+    // give feedback to say it was the correct choice
 
-        initials.addEventListener('keyup', () => {
-            submitButton.disabled = !initials.value
+    //If users clicks on the wrong choice
+    // give feed back to says its wrong
+    // reduce time by 5 seconds
 
-        }) 
+    // if the user click on the final choice of the final q
+    // end game
+
+
+    //end game
+    function endGame() {
+        //1. timer should stop
+        clearInterval(timerId);
+
+
+
+        //2. show the end game screen
+        sectionInitials.classList.remove('hide')
+
+        //Hide question screen
+        sectionQuestion.classList.add('hide')
+
+        // 3. show the current score in the end game screen
+        //hs -- time remaining
+        spanFinalHighscore.textContent = timeRemaining
+
+        submitButton.addEventListener('click', saveScore())
+
+        //showHighScores();
     }
-    )
 
-    submitButton.addEventListener('click', function(){
-        sectionInitials.classList.add('hide')
-    sectionHighscores.classList.remove('hide')
-    })
-}
+    //const initials = document.querySelector("input-initials")
 
-playAgainButton.addEventListener('click', function (event) {
+    //const submitButton = document.getElementById("submit-button")
+
+    //initials.addEventListener('keyup', () => {
+    //    submitButton.disabled = !initials.value
+    //})
+
+    // Save High Scores
+
+    function saveScore() {
+        let score = timeRemaining;
+        localStorage.setItem("initials" + score, JSON.stringify(initials))
+
+
+        initialsInput.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            initialsInput.addEventListener('keyup', () => {
+                submitButton.disabled = !initials.value;
+
+            })
+        }
+        )
+
+        submitButton.addEventListener('click', function () {
+            sectionInitials.classList.add('hide')
+            sectionHighscores.classList.remove('hide')
+
+        })
+    }
+
+    playAgainButton.addEventListener('click', function (event) {
 
         timeRemaining = 61
         sectionHighscores.classList.add('hide')
+        correctAnswer.classList.add('hide')
+        wrongAnswer.classList.add('hide')
 
         sectionLanding.classList.remove('hide')
 
-        
+
     })
-//saveHighScore = timeRemaining => {
-//    timeRemaining.preventDefault()
+    //saveHighScore = timeRemaining => {
+    //    timeRemaining.preventDefault()
 
-//    const score = {
-//        score: 
-//    }
-//} 
-// end game screen 
+    //    const score = {
+    //        score: 
+    //    }
+    //} 
+    // end game screen 
 
-function showHighScores() {
-    // Clear todoList element and update todoCountSpan
-    sectionInitials.classList.add('hide')
-    sectionHighscores.classList.remove('hide')
+    function showHighScores() {
+        // Clear todoList element and update todoCountSpan
+        sectionInitials.classList.add('hide')
+        sectionHighscores.classList.remove('hide')
 
-    var storedScores = JSON.parse(localStorage.getItem("initials" + "Score"));
+        var storedScores = JSON.parse(localStorage.getItem("initials" + "Score"));
 
-    if (storedScores !== null) {
-        rankings = storedScores;
+        if (storedScores !== null) {
+            rankings = storedScores;
+        }
+
+        ScoreHistoy.innerHTML = "";
+
+        // Render a new li for each todo
+        for (var i = 0; i < 6; i++) {
+            var rankings = rankings[i];
+
+            var li = document.createElement("li");
+            ol.textContent = initials + score;
+            ol.setAttribute("data-index", i);
+
+            ScoreHistoy.appendChild(li);
+        }
+
+
     }
-
-    ScoreHistoy.innerHTML = "";
-
-    // Render a new li for each todo
-    for (var i = 0; i < 6; i++) {
-        var rankings = rankings[i];
-
-        var li = document.createElement("li");
-        ol.textContent = initials + score;
-        ol.setAttribute("data-index", i);
-
-        ScoreHistoy.appendChild(li);
-    }
-
-    
-}
