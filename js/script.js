@@ -86,17 +86,22 @@ function showQuestion(index) {
 
         const button = document.createElement('button');
         button.textContent = choice.title;
+        button.setAttribute("data-set", choice.isAns)
 
         li.appendChild(button);
 
         questionChoices.appendChild(li);
     }
     questionChoices.addEventListener("click", e => {
-        console.log(e.target);
-       if (questionChoices.isAns === true) {
-           
-       } else {
+        
+        let responses = e.target.getAttribute('data-set')
 
+       if (responses === "true") {
+            console.log(true)
+       } else { 
+        console.log(false)
+        wrongAnswer.classList.remove('hide')
+        timeRemaining = -5
        }
        
     index++;
