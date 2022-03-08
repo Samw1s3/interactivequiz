@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assests/reset.css">
+    <link rel="stylesheet" href="./assests/helper.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+    <link rel="stylesheet" href="./assests/style.css">
+    <title>Interactive Quiz on Javascript Fundamentals</title>
+
+</head>
+<body>
+
+    <div class="section-timer hide " id="section-timer">
+        &#9200; Time Remaining : <span id="span-time"></span> </span>seconds
+    </div>
+
+    <!-- Landing Page-->
+    <section class="section-landing" id="section-landing">
+        <h1>Battle of the Minds</h1>
+
+        <button id="button-start">Start Game</button>
+    </section>
+
+    <!--Questions-->
+    <section class="hide section-questions" id="section-questions">
+        <!--title-->
+        <h1 id="question-title">What does javascript allow you to do?</h1>
+
+        <!--Choices-->
+        <ul id="question-choices">
+           
+        </ul>
+        <p class="hide" id="feedback">
+           <span class="hide" id="correct-answer">correct!</span><span class=hide id="wrong-answer">wrong!</span>
+        </p>
+    </section>
+
+
+    <!-- Submit Initials-->
+    <section class="hide" id="section-initials">
+
+        <h1>Finished </h1>
+        <h2>Your score this round: <span id="span-final-highscore"></span></h2>
+        <label for="input-initials" >Initials</label><input id="input-initials" type="text">
+        <button id="submit-button">Submit</button>
+
+    </section>
+    
+    <!--High Score Page -->
+    <section class="hide" id="highscore-rankings">
+        <h1>High Scores</h1>
+        <ol id="highscore-history" start="1">
+            <li>a</li>
+            <li>b</li>
+        </ol>
+
+        <button id="play-again-button">Play Again?</button>
+    </section>
+    <script src="./assests/questions.js"></script>
+<script src="./assests/script.js"></script>
+</body>
+</html>
