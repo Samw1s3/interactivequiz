@@ -23,7 +23,7 @@ var initials = [];
 var score = [];
 
 let timerId = null;
-let timeRemaining = 6;
+let timeRemaining = 60;
 
 let currentQuestionIndex = 0;
 let acceptingAnswers = true;
@@ -93,9 +93,13 @@ function showQuestion(index) {
     }
     questionChoices.addEventListener("click", e => {
         console.log(e.target);
+       if (questionChoices.isAns === true) {
+           
+       } else {
+
+       }
        
-        index = index + 1
-    console.log(index);
+    index++;
         // nextQuestion ();
     
     })
@@ -231,9 +235,12 @@ function saveScore() {
 
 playAgainButton.addEventListener('click', function (event) {
 
+        timeRemaining = 61
         sectionHighscores.classList.add('hide')
 
         sectionLanding.classList.remove('hide')
+
+        
     })
 //saveHighScore = timeRemaining => {
 //    timeRemaining.preventDefault()
