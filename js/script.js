@@ -98,10 +98,12 @@ function showQuestion(index) {
 
        if (responses === "true") {
             console.log(true)
+            correctAnswer.classList.remove('hide');
+
        } else { 
         console.log(false)
-        wrongAnswer.classList.remove('hide')
-        timeRemaining = -5
+        wrongAnswer.classList.remove('hide');
+       timeRemaining += -5 
        }
        
     index++;
