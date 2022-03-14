@@ -200,14 +200,16 @@ function showHighScores() {
 function renderHighscoreList(){
     const highscores = getHighscoresFromLocalStorage();
 
-    highscores.sort(function(a,b){
-        if(b.highscore > a.highscore){
+    highscores.sort(function(a, b){
+        if(b.score > a.score){
             return 1;
         }else {
             return -1;
         }
     }
     );
+
+    console.log(highscores);
 
     listHighscoore.textContent = ""; 
 
@@ -218,7 +220,7 @@ function renderHighscoreList(){
         // add to list
         const li = document.createElement('li');
 
-        li.textContent = highscore.name + '    ' + highscore.score 
+        li.textContent = highscore.name + ' score:' + highscore.score 
 
         listHighscoore.appendChild(li);
         
