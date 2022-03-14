@@ -3,24 +3,25 @@ const sectionQuestion = document.getElementById("section-questions");
 const sectionLanding = document.getElementById("section-landing");
 const sectionTimer = document.getElementById("section-timer");
 const sectionInitials = document.getElementById("section-initials");
+const sectionHighscores = document.getElementById("highscore-rankings");
+
 const spanTime = document.getElementById("span-time");
 const questionTitle = document.getElementById("question-title");
 const spanFinalHighscore = document.getElementById("span-final-highscore");
 const questionChoices = document.getElementById("question-choices");
-const correctAnswer = document.getElementById("correct-answer");
-const wrongAnswer = document.getElementById("wrong-answer");
+const questionFeedback = document.getElementById('question-feedback');
 const isAns = document.querySelector("questions.choices.isAns");
-const sectionHighscores = document.getElementById("highscore-rankings");
-const submitButton = document.getElementById("submit-button");
 
-const initialsInput = document.getElementById("input-initials");
-const ScoreHistoy = document.getElementById("highscore-history");
+const formHighscore = document.getElementById("form-highscore");
+const submitButton = document.getElementById("submit-button");
+const inputInitials = document.getElementById("input-initials");
+
+const listHighscoore = document.getElementById("list-highscore");
 const playAgainButton = document.getElementById("play-again-button");
+const clearButton = document.getElementById("button-clear");
+
 
 // const userInitials = document.getElementById("input-initials");
-
-var initials = [];
-var score = [];
 
 let timerId = null;
 let timeRemaining = 60;
@@ -46,7 +47,16 @@ buttonStart.addEventListener('click', function (event) {
 
     //    nextQuestion();
 })
+function showFeedback(message, timeOut = 1000) {
 
+    questionFeedback.textContent = message;
+    questionFeedback.classList.remove('hide')
+
+    setTimeout(function () {
+        questionFeedback.classList.add('hide')
+    }, timeOut)
+
+}
 //time
 // update the span-time for every passing second
 
@@ -69,17 +79,13 @@ function startTimer() {
 }
 
 function showQuestion(index) {
-    if (index === questions.length){
-        endGame();
-        return;
+    if (index === questions.length) {
+        return endGame();
     }
-    
+
     const question = questions[index];
 
     questionTitle.textContent = question.title;
-
-    correctAnswer.classList.add('hide')
-    wrongAnswer.classList.add('hide')
     //loop through the choices
 
     // generate li for each
@@ -97,198 +103,136 @@ function showQuestion(index) {
         li.appendChild(button);
 
         questionChoices.appendChild(li);
-
-        questionChoices.addEventListener("click", e => {
-
-            let responses = e.target.getAttribute('data-set')
-
-            if (responses === "true") {
-                console.log(true)
-                correctAnswer.classList.remove('hide');
-
-            } else {
-                console.log(false)
-                wrongAnswer.classList.remove('hide');
-                timeRemaining += -5
-            }
-            showQuestion(index+1);
-        })
     }
+
+    questionChoices.addEventListener("click", e => {
+
+        let responses = e.target.getAttribute('data-set')
+
+        // If user clicks on correct choice
+        // give feedback to say it was the correct choice
+        if (responses === "true") {
+            console.log(true)
+            showFeedback('correct!');
+            //If users clicks on the wrong choice
+            // give feed back to says its wrong
+            // reduce time by 5 seconds
+        } else {
+            console.log(false)
+            showFeedback('wrong!');
+            timeRemaining = timeRemaining - 5;
+        }
+        showQuestion(index + 1);
+    })
+
 
 }
 
-    //function nextQuestion() {
-
-    //    button.addEventListener('click', function(event){
-    //      if (choice.inAns == true) {
-    //        index = ++;
-
-
-    //question = questions[index]
-
-    //questionTitle.textContent = question.title;
-
-    //questionChoices.textContent = "";
-
-    //for (let index = 0; index < question.choices.length; index++) {
-    //    const choice = question.choices[index]
-
-    //    const li = document.createElement('li');
-
-    //    const button = document.createElement('button');
-    //     button.textContent = choice.title;
-
-    //    li.appendChild(button);
-    //
-    //     questionChoices.appendChild(li);
-    //  }
-
-    //      })
-    //} 
-    //   if (choice.inAns.true) {
-    //  }
-    //        button.addEventListener('click', true)
-    //       index = ++
 
 
 
 
-    // if (choice.isAns.true) {
+//end game
+function endGame() {
+    //1. timer should stop
+    clearInterval(timerId);
 
-    //}
+    //2. show the end game screen
+    sectionInitials.classList.remove('hide')
 
-    //help!!
-    //questionChoices.forEach(choice => {
-    //  questionChoices.addEventListener('click')
-    //if (inAns === true) {
-    //       correctAnswer.classList.remove('hide')
-    //      index++
-    //  }     
-    //   nextQuestion()
+    //Hide question screen
+    sectionQuestion.classList.add('hide')
 
-    //Questions
+    sectionTimer.classList.add('hide')
 
-    // when Click on the choice
-    // should move to the next questio
-    //function nextQuestion() {
-    //   index++
-    //}
+    // 3. show the current score in the end game screen
+    //hs -- time remaining
+    spanFinalHighscore.textContent = timeRemaining
 
-    //high score page
-    //1. click on the play again btn
-    //redirect the user to the landing page
+    //showHighScores();
+}
 
+formHighscore.addEventListener('submit', function (event) {
+    event.preventDefault();
+    // user can hit enter in the input box
+    // submit 
+    // add name and score to local storate
+    const userInput = inputInitials.value;
 
-
-    // If user clicks on correct choice
-    // give feedback to say it was the correct choice
-
-    //If users clicks on the wrong choice
-    // give feed back to says its wrong
-    // reduce time by 5 seconds
-
-    // if the user click on the final choice of the final q
-    // end game
-
-
-    //end game
-    function endGame() {
-        //1. timer should stop
-        clearInterval(timerId);
-
-
-
-        //2. show the end game screen
-        sectionInitials.classList.remove('hide')
-
-        //Hide question screen
-        sectionQuestion.classList.add('hide')
-
-        // 3. show the current score in the end game screen
-        //hs -- time remaining
-        spanFinalHighscore.textContent = timeRemaining
-
-        submitButton.addEventListener('click', saveScore())
-
-        //showHighScores();
+    const highscore = {
+        name: userInput,
+        score: timeRemaining,
     }
 
-    //const initials = document.querySelector("input-initials")
+    
+    const existingHighscores = getHighscoresFromLocalStorage();
+    // add new highscore 
+    existingHighscores.push(highscore);
+    // save it to local storage
+    localStorage.setItem('highscores', JSON.stringify(existingHighscores));
 
-    //const submitButton = document.getElementById("submit-button")
+    showHighScores();
+});
+/**
+ * 
+ * @returns {Array}
+ */
+function getHighscoresFromLocalStorage(){
+    return JSON.parse(
+        localStorage.getItem('highscores') || "[]"
+    )
+}
 
-    //initials.addEventListener('keyup', () => {
-    //    submitButton.disabled = !initials.value
-    //})
+//high score page
+//1. click on the play again btn
+//redirect the user to the landing page
 
-    // Save High Scores
+function showHighScores() {
+    
+    sectionInitials.classList.add('hide')
 
-    function saveScore() {
-        let score = timeRemaining;
-        localStorage.setItem("initials" + score, JSON.stringify(initials))
+    sectionHighscores.classList.remove('hide')
+
+    renderHighscoreList();
+}
 
 
-        initialsInput.addEventListener("submit", function (event) {
+function renderHighscoreList(){
+    const highscores = getHighscoresFromLocalStorage();
 
-            event.preventDefault();
-
-            initialsInput.addEventListener('keyup', () => {
-                submitButton.disabled = !initials.value;
-
-            })
+    highscores.sort(function(a,b){
+        if(b.highscore > a.highscore){
+            return 1;
+        }else {
+            return -1;
         }
-        )
-
-        submitButton.addEventListener('click', function () {
-            sectionInitials.classList.add('hide')
-            sectionHighscores.classList.remove('hide')
-
-        })
     }
+    );
 
-    playAgainButton.addEventListener('click', function (event) {
+    listHighscoore.textContent = ""; 
 
-        timeRemaining = 61
-        sectionHighscores.classList.add('hide')
-        correctAnswer.classList.add('hide')
-        wrongAnswer.classList.add('hide')
+    // create li for each item 
+    for (let index = 0; index < highscores.length; index++) {
+        const highscore = highscores[index];
 
-        sectionLanding.classList.remove('hide')
+        // add to list
+        const li = document.createElement('li');
+
+        li.textContent = highscore.name + '    ' + highscore.score 
+
+        listHighscoore.appendChild(li);
+        
+    }
+}
+
+playAgainButton.addEventListener('click', function (event) {
+        window.location.reload();
 
 
     })
-    //saveHighScore = timeRemaining => {
-    //    timeRemaining.preventDefault()
+    clearButton.addEventListener('click', function(event){
 
-    //    const score = {
-    //        score: 
-    //    }
-    //} 
-    // end game screen 
+        localStorage.setItem('highscores', "[]");
 
-    function showHighScores() {
-        // Clear todoList element and update todoCountSpan
-        sectionInitials.classList.add('hide')
-        sectionHighscores.classList.remove('hide')
-
-        var storedScores = JSON.parse(localStorage.getItem("initials" + "Score"));
-
-        if (storedScores !== null) {
-            rankings = storedScores;
-        }
-
-        ScoreHistoy.innerHTML = "";
-
-        // Render a new li for each todo
-        for (var i = 0; i < 6; i++) {
-            var rankings = rankings[i];
-
-            var li = document.createElement("li");
-            ol.textContent = initials + score;
-            ol.setAttribute("data-index", i);
-
-            ScoreHistoy.appendChild(li);
-        }
-
-
-    }
+        listHighscoore.textContent = ""
+    })

@@ -13,6 +13,7 @@ body {
 }
 
 /* Timer style*/
+
 div {
     border: 2px solid black;
     width: 35%;
@@ -45,21 +46,28 @@ section {
     height: auto;
 }
 
+/*   */
+
 h1 {
     display: block;
     padding: 20px;
-    margin: 20px;
-    font-size: 2rem;
+    margin: auto;
+    font-size: 1.5rem;
     justify-content: center;
+
    
 }
+
+/*   */ 
 
 ol {
     list-style-type: decimal;
     padding: 2rem;
-    margin:2rem;
+    margin-left: 1rem;
     align-items: top ;
 }
+
+/*    */ 
 
 #button-start {
     justify-content: center;
@@ -67,7 +75,9 @@ ol {
     padding:10px;
     justify-items: center;
     width: 150px;
+    margin: auto;
 }
+
 
 button {
     position: relative;
